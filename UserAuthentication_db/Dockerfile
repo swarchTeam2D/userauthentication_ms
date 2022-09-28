@@ -5,4 +5,4 @@ ENV MYSQL_DATABASE=userauthentication_db
 ENV MYSQL_USER=userauthentication
 ENV MYSQL_PASSWORD=2022
 
-EXPOSE 3306
+EXPOSE 33061
