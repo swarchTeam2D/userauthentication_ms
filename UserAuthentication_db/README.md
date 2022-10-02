@@ -4,7 +4,7 @@ docker build -t userauthentication_db .
 
 # Ejecutar el contenedor
 
-docker run -d -t -i -p 33061:33061 --name userauthentication_db userauthentication_db
+docker run -d -t -i -p 33061:3306 --name userauthentication_db userauthentication_db
 
 # Ejecutar phpmyadmin
 

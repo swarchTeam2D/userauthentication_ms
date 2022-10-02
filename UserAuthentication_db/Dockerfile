@@ -5,4 +5,6 @@ ENV MYSQL_DATABASE=userauthentication_db
 ENV MYSQL_USER=userauthentication
 ENV MYSQL_PASSWORD=2022
 
-EXPOSE 33061
+ADD userauthentication_db.sql /docker-entrypoint-initdb.d
+
+EXPOSE 3306
