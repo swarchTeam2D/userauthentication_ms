@@ -102,7 +102,11 @@ router.put("/password-change", validatePassword, (req, res, next) => {
 // http://localhost:3000/api/login
 router.post("/login", (req, res, next) => {
   db.query(
-    `SELECT * FROM user WHERE username = ${db.escape(req.body.username)};`,
+    // `SELECT * FROM user WHERE username = ${db.escape(req.body.username)};`,
+    `SELECT u.username, u.password, r.id AS id_role, r.name AS role_name FROM user u 
+      INNER JOIN role_user ON role_user.username_role = u.username 
+      INNER JOIN role r ON role_user.id_role = r.id 
+      WHERE u.username = ${db.escape(req.body.username)};`,
     (err, results) => {
       if (err) {
         throw err;
@@ -127,10 +131,22 @@ router.post("/login", (req, res, next) => {
             });
           }
           if (bResult) {
+            let rolesArray = [];
+
+            for (let result of results) {
+              rolesArray.push({
+                id_role: result.id_role,
+                role_name: result.role_name,
+              });
+            }
+
             //password match
             const token = jwt.sign(
               {
-                username: results[0].username,
+                user: {
+                  username: results[0].username,
+                  roles: rolesArray,
+                },
               },
               "SECRETKEY",
               { expiresIn: "7d" }
@@ -141,7 +157,7 @@ router.post("/login", (req, res, next) => {
             return res.status(200).send({
               message: "Logged in!",
               token,
-              user: results[0],
+              username: results[0].username,
             });
           }
           return res.status(401).send({
@@ -180,31 +196,23 @@ router.post("/login/role/user", (req, res, next) => {
       req.body.username
     )});`,
     (err, results) => {
-      if (results && results.length) {
-        // error
-        return res.status(409).send({
-          message: "This username is already in use!",
-        });
-      } else {
-        // username not in use
-        db.query(
-          `INSERT INTO role_user (username_role, id_role) VALUES (${db.escape(
-            req.body.username
-          )}, ${db.escape(req.body.id)}
+      db.query(
+        `INSERT INTO role_user (username_role, id_role) VALUES (${db.escape(
+          req.body.username
+        )}, ${db.escape(req.body.id)}
                 );`,
-          (err, results) => {
-            if (err) {
-              throw err;
-              return res.status(400).send({
-                message: err,
-              });
-            }
-            return res.status(201).send({
-              message: "Role created!",
+        (err, results) => {
+          if (err) {
+            throw err;
+            return res.status(400).send({
+              message: err,
             });
           }
-        );
-      }
+          return res.status(201).send({
+            message: "Role created!",
+          });
+        }
+      );
     }
   );
 });
@@ -244,10 +252,20 @@ router.get("/users/:username", (req, res, next) => {
   );
 });
 
-// http://localhost:3000/api/secret-route
-router.get("/secret-route", userController.isLoggedIn, (req, res, next) => {
-  console.log(req.userData);
+// http://localhost:3000/api/auth
+router.get("/auth", userController.isLoggedIn, (req, res, next) => {
+  return res.status(201).send(req.token);
   res.send("This is secret content");
 });
+
+// http://localhost:3000/api/verifyToken
+router.get(
+  "/verifyToken",
+  userController.isLoggedInRequest,
+  (req, res, next) => {
+    return res.status(201).send(req.tokenValidation);
+    res.send("This is secret content");
+  }
+);
 
 module.exports = router;

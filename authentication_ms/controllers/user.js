@@ -26,18 +26,15 @@ module.exports = {
     next();
   },
 
+  // Postman authentication Bearer Token
   isLoggedIn: (req, res, next) => {
     if (!req.headers.authorization) {
       return res.status(400).send({
-        message: "Your session isn't valid!",
+        message: "Token doesn't exist!",
       });
     }
-    // try {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(" ")[1];
-    // const decoded = jwt.verify(token, "SECRETKEY");
-    // console.log("despues", token);
-    // req.userData = decoded;
     jwt.verify(token, "SECRETKEY", function (err, token) {
       if (err) {
         return res.status(401).send({
@@ -48,12 +45,27 @@ module.exports = {
         next();
       }
     });
-    // next();
-    // } catch (error) {
-    //   throw error;
-    //   return res.status(400).send({
-    //     message: "Your Session is not valid!",
-    //   });
-    // }
+  },
+
+  // Request
+  isLoggedInRequest: (req, res, next) => {
+    if (!req.body.token) {
+      return res.status(400).send({
+        message: "Token doesn't exist!",
+      });
+    }
+
+    const tokenValidation = req.body.token;
+
+    jwt.verify(tokenValidation, "SECRETKEY", function (err, tokenValidation) {
+      if (err) {
+        return res.status(401).send({
+          message: "Your Session is not valid!",
+        });
+      } else {
+        req.tokenValidation = tokenValidation.user;
+        next();
+      }
+    });
   },
 };
