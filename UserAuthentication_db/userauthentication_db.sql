@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Sep 28, 2022 at 02:17 AM
+-- Generation Time: Oct 03, 2022 at 03:37 AM
 -- Server version: 5.7.39
 -- PHP Version: 8.0.22
 
@@ -31,6 +31,14 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'Estudiante'),
+(2, 'Profesor');
 
 -- --------------------------------------------------------
 
@@ -73,11 +81,11 @@ ALTER TABLE `role`
 --
 ALTER TABLE `role_user`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username_role_2` (`username_role`),
   ADD KEY `id_user` (`username_role`),
   ADD KEY `id_role` (`id_role`),
   ADD KEY `username` (`username_role`),
-  ADD KEY `username_role` (`username_role`);
+  ADD KEY `username_role` (`username_role`),
+  ADD KEY `username_role_2` (`username_role`) USING BTREE;
 
 --
 -- Indexes for table `user`
