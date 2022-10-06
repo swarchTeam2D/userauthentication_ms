@@ -56,7 +56,6 @@ module.exports = {
     }
 
     const tokenValidation = req.body.token;
-
     jwt.verify(tokenValidation, "SECRETKEY", function (err, tokenValidation) {
       if (err) {
         return res.status(401).send({

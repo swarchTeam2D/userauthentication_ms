@@ -5,9 +5,9 @@ const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 
 const db = require("../dbinit/db");
-const userController = require("../controllers/user.js");
-const validateRole = require("../controllers/role.js");
-const validatePassword = require("../controllers/password");
+const userController = require("../validation/user");
+const validateRole = require("../validation/role");
+const validatePassword = require("../validation/password");
 
 // http://localhost:3000/api/sign-up
 router.post("/sign-up", userController.validateRegister, (req, res, next) => {
