@@ -5,7 +5,7 @@ var db_config = {
   host: "host.docker.internal",
   port: "33061",
   user: "userauthentication",
-  password: "2022",
+  password: "secret",
   database: "userauthentication_db",
 };
 

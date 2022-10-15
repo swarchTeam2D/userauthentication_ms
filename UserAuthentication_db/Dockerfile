@@ -1,9 +1,9 @@
 FROM mysql:5.7
 
-ENV MYSQL_ROOT_PASSWORD=123
+ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_DATABASE=userauthentication_db
 ENV MYSQL_USER=userauthentication
-ENV MYSQL_PASSWORD=2022
+ENV MYSQL_PASSWORD=secret
 
 ADD userauthentication_db.sql /docker-entrypoint-initdb.d
 
