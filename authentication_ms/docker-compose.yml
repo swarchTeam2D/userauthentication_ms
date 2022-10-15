@@ -1,0 +1,9 @@
+version: '2'
+services:
+  app:
+    image: userauthentication_ms
+    container_name: userauthentication_ms
+    build: ./
+    restart: always
+    ports:
+      - "8085:3000"
