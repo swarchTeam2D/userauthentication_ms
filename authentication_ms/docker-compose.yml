@@ -12,6 +12,8 @@ services:
       MYSQL_USER: userauthentication
       MYSQL_PASSWORD: secret
       MYSQL_DB: userauthentication_db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   db:
     image: mysql:5.7
@@ -26,6 +28,8 @@ services:
     volumes:
       - ./userauthentication.sql:/docker-entrypoint-initdb.d/userauthentication.sql
       - dbdata:/var/lib/mysql:rw
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -39,5 +43,8 @@ services:
     restart: always
     ports:
       - 8089:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      
 volumes:
   dbdata:
