@@ -66,11 +66,13 @@ router.put("/password-change", validatePassword, async (req, res, next) => {
   let username = req.body.username;
   let sql = "SELECT password FROM user WHERE LOWER(username) = LOWER(?)";
   let results;
+
   try {
     results = await setQuery(sql, [username], res);
-    if (!results) {
+
+    if (!results || results == "" || !results.length) {
       res.status(404).send({
-        message: "The request does not exist",
+        message: null,
       });
     }
   } catch (e) {
