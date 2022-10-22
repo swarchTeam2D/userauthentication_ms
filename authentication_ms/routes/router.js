@@ -72,7 +72,7 @@ router.put("/password-change", validatePassword, async (req, res, next) => {
 
     if (!results || results == "" || !results.length) {
       res.status(404).send({
-        message: null,
+        message: "The username does not exist",
       });
     }
   } catch (e) {
