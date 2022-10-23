@@ -26,7 +26,7 @@ services:
     ports:
       - "33061:3306"
     volumes:
-      - ./userauthentication.sql:/docker-entrypoint-initdb.d/userauthentication.sql
+      - ./userauthentication_db.sql:/docker-entrypoint-initdb.d/userauthentication_db.sql
       - dbdata:/var/lib/mysql:rw
     extra_hosts:
       - "host.docker.internal:host-gateway"
