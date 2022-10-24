@@ -265,4 +265,14 @@ router.get(
   }
 );
 
+// http://localhost:3000/api/verifyToken
+router.post(
+  "/verifyTokenPost",
+  userController.isLoggedInRequest,
+  (req, res, next) => {
+    return res.status(201).send(req.tokenValidation);
+    res.send("This is secret content");
+  }
+);
+
 module.exports = router;
