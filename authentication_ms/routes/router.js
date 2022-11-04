@@ -15,23 +15,6 @@ const setQuery = queryFunctions.setQuery;
 
 
 
-router.get("/ldap-login/:user/:password", async (req, res) => {
-  let user = req.params.user;
-  let password = req.params.password;
-
-  let response = await loginLDAP(user,password);
-
-  if(response){
-    res.send({
-      message: "Log-in ok"
-    });
-  }else{
-    res.status(400).send({
-      message: "Log-in fail"
-    });
-  }
-})
-
 // http://localhost:3000/api/sign-up
 router.post(
   "/sign-up",
