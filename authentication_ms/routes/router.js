@@ -10,7 +10,27 @@ const validateRole = require("../validation/role");
 const validatePassword = require("../validation/password");
 
 const queryFunctions = require("../connection/request");
+const loginLDAP = require("./ldapValidation");
 const setQuery = queryFunctions.setQuery;
+
+
+
+router.get("/ldap-login/:user/:password", async (req, res) => {
+  let user = req.params.user;
+  let password = req.params.password;
+
+  let response = await loginLDAP(user,password);
+
+  if(response){
+    res.send({
+      message: "Log-in ok"
+    });
+  }else{
+    res.status(400).send({
+      message: "Log-in fail"
+    });
+  }
+})
 
 // http://localhost:3000/api/sign-up
 router.post(
@@ -105,6 +125,16 @@ router.put("/password-change", validatePassword, async (req, res, next) => {
 // http://localhost:3000/api/login
 router.post("/login", async (req, res, next) => {
   let username = req.body.username;
+  let password = req.body.password;
+
+  console.log("enter login");
+  console.log(await loginLDAP(username, password));
+  if(! await loginLDAP(username, password)){
+    return res.status(401).send({
+      message: "LDAP: Username or password incorrect!",
+    });
+  }
+
   let sql =
     "SELECT u.username, u.password, r.id AS id_role, r.name AS role_name FROM user u " +
     "INNER JOIN role_user ON role_user.username_role = u.username " +
@@ -125,7 +155,7 @@ router.post("/login", async (req, res, next) => {
 
   let user = results[0];
 
-  bcryptjs.compare(req.body.password, user.password, async (bErr, bResult) => {
+  bcryptjs.compare(password, user.password, async (bErr, bResult) => {
     if (bErr) {
       return res.status(500).send({
         message: "Internal server error",

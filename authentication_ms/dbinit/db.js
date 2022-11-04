@@ -1,22 +1,22 @@
 const mysql = require("mysql");
 
 //Production
-var db_config = {
+/* var db_config = {
   host: "host.docker.internal",
   port: "33061",
   user: "userauthentication",
   password: "secret",
   database: "userauthentication_db",
-};
+}; */
 
 //Development
-//var db_config = {
-//   host: "localhost",
-//   port: "3306",
-//   user: "root",
-//   password: "",
-//   database: "userauthentication_db",
-//};
+var db_config = {
+  host: "localhost",
+  port: "3306",
+  user: "root",
+  password: "",
+  database: "userauthentication_db",
+};
 
 async function handleDisconnect() {
   let connection;
