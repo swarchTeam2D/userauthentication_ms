@@ -10,27 +10,8 @@ const validateRole = require("../validation/role");
 const validatePassword = require("../validation/password");
 
 const queryFunctions = require("../connection/request");
-const loginLDAP = require("./ldapValidation");
+const loginLDAP = require("../connection/ldapValidation");
 const setQuery = queryFunctions.setQuery;
-
-
-
-router.get("/ldap-login/:user/:password", async (req, res) => {
-  let user = req.params.user;
-  let password = req.params.password;
-
-  let response = await loginLDAP(user,password);
-
-  if(response){
-    res.send({
-      message: "Log-in ok"
-    });
-  }else{
-    res.status(400).send({
-      message: "Log-in fail"
-    });
-  }
-})
 
 // http://localhost:3000/api/sign-up
 router.post(
@@ -127,9 +108,7 @@ router.post("/login", async (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
-  console.log("enter login");
-  console.log(await loginLDAP(username, password));
-  if(! await loginLDAP(username, password)){
+  if (!(await loginLDAP(username, password))) {
     return res.status(401).send({
       message: "LDAP: Username or password incorrect!",
     });
