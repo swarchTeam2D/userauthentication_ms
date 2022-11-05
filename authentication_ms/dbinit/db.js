@@ -1,43 +1,47 @@
 const mysql = require("mysql");
 
 //Production
-/* var db_config = {
+var db_config = {
   host: "host.docker.internal",
   port: "33061",
   user: "userauthentication",
   password: "secret",
   database: "userauthentication_db",
-}; */
+};
 
 //Development
-var db_config = {
-  host: "localhost",
-  port: "3306",
-  user: "root",
-  password: "",
-  database: "userauthentication_db",
-};
+// var db_config = {
+//   host: "localhost",
+//   port: "3306",
+//   user: "root",
+//   password: "",
+//   database: "userauthentication_db",
+// };
 
 async function handleDisconnect() {
   let connection;
   connection = mysql.createConnection(db_config); // Recreate the connection, since
   // the old one cannot be reused.
 
-  connection.connect(function (err) {              // The server is either down
-    if (err) {                                     // or restarting (takes a while sometimes).
+  connection.connect(function (err) {
+    // The server is either down
+    if (err) {
+      // or restarting (takes a while sometimes).
       console.log("El error de la conexión es: " + err);
       setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
     } else {
       console.log("¡Conectado a la base de datos!");
-    }                                     // to avoid a hot loop, and to allow our node script to
-  });                                     // process asynchronous requests in the meantime.
+    } // to avoid a hot loop, and to allow our node script to
+  }); // process asynchronous requests in the meantime.
   // If you're also serving http, display a 503 error.
-  connection.on('error', function (err) {
-    console.log('db error', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-      handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
+  connection.on("error", function (err) {
+    console.log("db error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      // Connection to the MySQL server is usually
+      handleDisconnect(); // lost due to either server restart, or a
+    } else {
+      // connnection idle timeout (the wait_timeout
+      throw err; // server variable configures this)
     }
   });
 
@@ -51,15 +55,14 @@ async function getConnection() {
 async function closeConnection(connection) {
   connection.end(function (err) {
     if (err) {
-      return console.log('error: ' + err.message)
+      return console.log("error: " + err.message);
     }
 
-    console.log('Database connection closed');
-  })
+    console.log("Database connection closed");
+  });
 }
-
 
 module.exports = {
   getConnection: getConnection,
-  closeConnection: closeConnection
-}
+  closeConnection: closeConnection,
+};
