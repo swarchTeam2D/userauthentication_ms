@@ -2,8 +2,8 @@ const mysql = require("mysql");
 
 //Production
 var db_config = {
-  host: "host.docker.internal",
-  port: "33061",
+  host: "35.229.27.115",
+  port: "3306",
   user: "userauthentication",
   password: "secret",
   database: "userauthentication_db",
