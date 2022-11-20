@@ -10,7 +10,7 @@ async function loginLDAP(user, password) {
 
 async function validateLogin(user, password) {
   const client = ldap.createClient({
-    url: "ldap://host.docker.internal:389",
+    url: `ldap://${LDAP_URL}:${LDAP_PORT}`,
   });
 
   return new Promise((resolve, reject) => {
