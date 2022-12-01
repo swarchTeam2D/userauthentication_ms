@@ -10,7 +10,7 @@ async function loginLDAP(user, password) {
 
 async function validateLogin(user, password) {
   const client = ldap.createClient({
-    url: `ldap://${LDAP_URL}:${LDAP_PORT}`,
+    url: `ldap://${process.env.LDAP_URL}:${process.env.LDAP_PORT}`,
   });
 
   return new Promise((resolve, reject) => {
