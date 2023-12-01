@@ -8,10 +8,13 @@ services:
     ports:
       - "8085:3000"
     environment:
-      MYSQL_HOST: host.docker.internal
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
       MYSQL_USER: userauthentication
       MYSQL_PASSWORD: secret
       MYSQL_DB: userauthentication_db
+      LDAP_URL: host.docker.internal
+      LDAP_PORT: 389
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

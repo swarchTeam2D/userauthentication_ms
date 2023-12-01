@@ -35,6 +35,8 @@ router.post(
     }
     // username not in use
     bcryptjs.hash(req.body.password, 10, async (err, hash) => {
+      console.log(hash)
+
       if (err) {
         return res.status(500).send({
           message: err,
@@ -107,7 +109,6 @@ router.put("/password-change", validatePassword, async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
-
   if (!(await loginLDAP(username, password))) {
     return res.status(401).send({
       message: "LDAP: Username or password incorrect!",
@@ -122,6 +123,8 @@ router.post("/login", async (req, res, next) => {
   let results;
   try {
     results = await setQuery(sql, [username], res);
+    console.log(sql)
+
     if (!results.length) {
       return res.status(400).send({
         message: "Username or password incorrect!",
